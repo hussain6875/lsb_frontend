@@ -1,11 +1,11 @@
-// src/pages/Profile.js  (page-level component)
+// src/pages/ProfilePage.js
 import React from "react";
-import ProfileComponent from "../components/Profile";
+import Profile from "../components/Profile";
 
 const ProfilePage = () => {
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-100">
-      <ProfileComponent />
+      <Profile />
     </div>
   );
 };

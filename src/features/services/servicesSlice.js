@@ -63,7 +63,7 @@ export const updateService = createAsyncThunk(
         throw new Error("You do not have permission to update this service");
       }
       return await apiClient(`/services/${serviceId}`, {
-        method: "PATCH",
+        method: "PUT",
         body: formData,
       });
     } catch (err) {

@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchServices } from "../features/services/servicesSlice";
 import { Link } from "react-router-dom";
+import {getImageUrl } from "../api/apiClient";
+
 
 const ServiceList = () => {
   const dispatch = useDispatch();
@@ -21,8 +23,7 @@ const ServiceList = () => {
         {services.map((s) => (
           <div key={s.id} className="border rounded-lg p-4 shadow hover:shadow-lg transition cursor-pointer">
             <img
-              src={s.imageUrl ? `${process.env.REACT_APP_BASE_URL}${s.imageUrl}` : "/placeholder.png"}
-              alt={s.name}
+                            src={getImageUrl(s.imageUrl)} alt={s.name} 
               className="w-full h-48 object-cover rounded-t-lg"
             />
             <h2 className="text-lg font-medium mt-2">{s.name}</h2>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../features/auth/authSlice";
-import { Menu, X } from "lucide-react";
+import { Menu, X ,User} from "lucide-react";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -63,6 +63,15 @@ const Navbar = () => {
               >
                 My Bookings
               </NavLink>
+
+               <NavLink
+      to="/profile"
+      onClick={() => setIsOpen(false)}
+      className={({ isActive }) => (isActive ? activeClass : inactiveClass)}
+    >
+        <User size={18} /> 
+    </NavLink>
+
               <button
                 onClick={handleLogout}
                 className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-300 transform hover:scale-105"
@@ -74,7 +83,7 @@ const Navbar = () => {
             <>
               <NavLink
                 to="/login"
-                className={({ isActive }) => (isActive ? activeClass : inactiveClass)}
+                className={({ isActive }) => (isActive ? activeClass : inactiveClass) }
               >
                 Login
               </NavLink>

@@ -58,18 +58,14 @@ const Home = () => {
             {services.map((service) => (
               <div
                 key={service.id}
-                className="w-full flex-shrink-0 cursor-pointer"
+               className="w-full h-80 flex-shrink-0 cursor-pointer"
                 onClick={() => navigate(`/services/${service.id}`)}
               >
-               <img src={getImageUrl(service.imageUrl)} alt={service.name} />
-
-                <div className="bg-white p-4">
-                  <h3 className="text-lg font-semibold">{service.name}</h3>
-                  <p className="text-sm text-gray-600">
-                    {service.description?.slice(0, 60) || "No description"}
-                  </p>
-                  <p className="mt-2 text-blue-600 font-bold">₹{service.price}</p>
-                </div>
+<img
+    src={getImageUrl(service.imageUrl)}
+    alt={service.name}
+    className="w-full h-full object-cover rounded-xl"
+  />
               </div>
             ))}
           </div>
@@ -125,12 +121,8 @@ const Home = () => {
                 onClick={() => navigate(`/services/${service.id}`)}
                 className="bg-white rounded-xl shadow-md hover:shadow-lg transition cursor-pointer"
               >
-                {/* <img
-                  src={service.imageUrl || "/placeholder.png"}
-                  alt={service.name}
-                  className="w-full h-48 object-cover rounded-t-xl"
-                /> */}
-<img src={getImageUrl(service.imageUrl)} alt={service.name} />
+<img src={getImageUrl(service.imageUrl)} alt={service.name} 
+ className="w-full h-48 object-cover rounded-t-xl"/>
 
                 <div className="p-4">
                   <h3 className="text-lg font-semibold">{service.name}</h3>

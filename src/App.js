@@ -15,6 +15,7 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import ServiceForm from "./pages/ServiceForm";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
     return (
@@ -60,6 +61,14 @@ function App() {
                         />
 
                         <Route path="/login" element={<Login />} />
+                        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage/>
+            </ProtectedRoute>
+          }
+        />
                         <Route path="/register" element={<Register />} />
                         {/* fallback */}
                         <Route path="*" element={<div className="p-8">Page not found</div>} />
