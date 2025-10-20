@@ -32,7 +32,14 @@ const BookingForm = () => {
       return;
     }
 
-    const payload = { serviceId: Number(id), bookingDate, street, city, pincode, notes };
+    const payload = { 
+  serviceId: Number(id), 
+  bookingDate: new Date(bookingDate).toISOString(), 
+  street, 
+  city, 
+  pincode, 
+  notes 
+};
 
     try {
       await dispatch(createBooking(payload)).unwrap();

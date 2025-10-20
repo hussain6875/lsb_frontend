@@ -1,8 +1,9 @@
-// src/features/bookings/bookingsSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { apiClient } from "../../api/apiClient";
 
 // ------------------- Async Thunks -------------------
+
+// 📥 Fetch Bookings (role-based)
 export const fetchBookings = createAsyncThunk(
   "bookings/fetchBookings",
   async ({ role, userId }, { rejectWithValue }) => {
@@ -16,31 +17,39 @@ export const fetchBookings = createAsyncThunk(
   }
 );
 
-
+// 🆕 Create Booking
 export const createBooking = createAsyncThunk(
   "bookings/createBooking",
   async (bookingData, { rejectWithValue }) => {
     try {
-      return await apiClient("/bookings", { method: "POST", body: JSON.stringify(bookingData) });
+      return await apiClient("/bookings", {
+        method: "POST",
+        body: JSON.stringify(bookingData),
+      });
     } catch (err) {
       return rejectWithValue(err.message);
     }
   }
 );
 
+// ✍️ Update Booking Status (admin/provider only)
 export const updateBookingStatus = createAsyncThunk(
   "bookings/updateBookingStatus",
-  async ({ bookingId, status, role }, { rejectWithValue }) => {
+  async ({ id, status,message }, { rejectWithValue }) => {
     try {
-      if (role !== "admin" && role !== "technician") {
-        throw new Error("You do not have permission to update booking status");
-      }
-      return await apiClient(`/bookings/${bookingId}/status`, { method: "PATCH", body: JSON.stringify({ status }) });
+      return await apiClient(`/bookings/${id}/status`, {
+        method: "PATCH",
+          headers: {
+    "Content-Type": "application/json",
+  },
+        body: JSON.stringify({ status,message }),
+      });
     } catch (err) {
       return rejectWithValue(err.message);
     }
   }
 );
+
 
 // ------------------- Slice -------------------
 const bookingsSlice = createSlice({
@@ -53,21 +62,50 @@ const bookingsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchBookings.pending, (state) => { state.loading = true; state.error = null; })
-      .addCase(fetchBookings.fulfilled, (state, action) => { state.loading = false; state.bookings = action.payload; })
-      .addCase(fetchBookings.rejected, (state, action) => { state.loading = false; state.error = action.payload; })
+      // Fetch bookings
+      .addCase(fetchBookings.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchBookings.fulfilled, (state, action) => {
+        state.loading = false;
+        state.bookings = action.payload;
+      })
+      .addCase(fetchBookings.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
 
-      .addCase(createBooking.pending, (state) => { state.loading = true; state.error = null; })
-      .addCase(createBooking.fulfilled, (state, action) => { state.loading = false; state.bookings.push(action.payload); })
-      .addCase(createBooking.rejected, (state, action) => { state.loading = false; state.error = action.payload; })
+      // Create booking
+      .addCase(createBooking.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createBooking.fulfilled, (state, action) => {
+        state.loading = false;
+        state.bookings = [...state.bookings, action.payload]; // ✅ better than push
+      })
+      .addCase(createBooking.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
 
-      .addCase(updateBookingStatus.pending, (state) => { state.loading = true; state.error = null; })
+      // Update booking status
+      .addCase(updateBookingStatus.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(updateBookingStatus.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.bookings.findIndex(b => b.id === action.payload.id);
+        const index = state.bookings.findIndex(
+          (b) => b.id === action.payload.id
+        );
         if (index !== -1) state.bookings[index] = action.payload;
       })
-      .addCase(updateBookingStatus.rejected, (state, action) => { state.loading = false; state.error = action.payload; });
+      .addCase(updateBookingStatus.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 

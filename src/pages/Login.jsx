@@ -17,7 +17,7 @@ const Login = () => {
       .then((res) => {
         if (res.role === "admin") navigate("/admin-dashboard");
         else if (res.role === "provider") navigate("/provider-dashboard");
-        else navigate("/home");
+        else navigate("/");
       })
       .catch((err) => console.error("Login failed:", err));
   };

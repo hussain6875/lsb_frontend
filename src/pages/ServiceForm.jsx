@@ -52,20 +52,6 @@ const ServiceForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        //   // attach providerId automatically
-        //   const dataToSend = {
-        //     ...formData,
-        //     providerId: user?.id, // 👈 auto link to logged-in provider/admin
-        //   };
-
-        //   if (id) {
-        //     dispatch(updateService({ id, data: dataToSend }));
-        //   } else {
-        //     dispatch(addService(dataToSend));
-        //   }
-
-        //   navigate("/services");
-        // };
         
         // 📝 FormData for sending image + other fields
         const dataToSend = new FormData();

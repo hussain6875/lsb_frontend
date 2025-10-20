@@ -16,6 +16,8 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import ServiceForm from "./pages/ServiceForm";
 import ProfilePage from "./pages/ProfilePage";
+import ProviderBookings from "./pages/ProviderBookings";
+import AdminBookings from "./pages/AdminBookings";
 
 function App() {
     return (
@@ -24,7 +26,7 @@ function App() {
                 <Navbar />
                 <main className="flex-1">
                     <Routes>
-                        <Route path="/home" element={<Home />} />
+                        <Route path="/" element={<Home />} />
                         <Route path="/services" element={<ServiceList />} />
                         <Route path="/services/:id" element={<ServiceDetails />} />
                         <Route
@@ -44,9 +46,25 @@ function App() {
                             }
                         />
                         <Route
+  path="/provider-dashboard"
+  element={
+    <ProtectedRoute allowedRoles={["provider"]}>
+      <ProviderBookings />
+    </ProtectedRoute>
+  }
+/>
+                    <Route
+  path="/admin-dashboard"
+  element={
+    <ProtectedRoute allowedRoles={["admin"]}>
+      <AdminBookings/>
+    </ProtectedRoute>
+  }
+/>
+                        <Route
                             path="/services/new"
                             element={
-                                <ProtectedRoute allowedRoles={["admin", "provider"]}>
+                                <ProtectedRoute allowedRoles={["provider"]}>
                                     <ServiceForm />
                                 </ProtectedRoute>
                             }
