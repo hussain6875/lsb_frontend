@@ -35,23 +35,17 @@ export const addService = createAsyncThunk(
   "services/addService",
   async (formData, { rejectWithValue }) => {
     try {
-      const response= await apiClient("/services", {
+      const data = await apiClient("/services/create", {
         method: "POST",
         body: formData,
       });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to add service");
-      }
-
-      return await response.json();
-      
+      return data;
     } catch (err) {
       return rejectWithValue(err.message);
     }
   }
 );
+
 
 // Update service (only admin/provider)
 export const updateService = createAsyncThunk(
