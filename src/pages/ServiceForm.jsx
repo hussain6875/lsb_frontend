@@ -131,7 +131,7 @@ const ServiceForm = () => {
                         <option value="cleaning">Cleaning</option>
                         <option value="plumbing">Plumbing</option>
                         <option value="electrical">Electrical</option>
-                        <option value="electrical">Installation</option>
+                        <option value="installation">Installation</option>
                     </select>
                 </div>
                 {/* 👇 Image upload */}

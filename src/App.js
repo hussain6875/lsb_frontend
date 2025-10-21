@@ -46,23 +46,23 @@ function App() {
                             }
                         />
                         <Route
-  path="/provider-dashboard"
-  element={
-    <ProtectedRoute allowedRoles={["provider"]}>
-      <ProviderBookings />
-    </ProtectedRoute>
-  }
-/>
-                    <Route
-  path="/admin-dashboard"
-  element={
-    <ProtectedRoute allowedRoles={["admin"]}>
-      <AdminBookings/>
-    </ProtectedRoute>
-  }
-/>
+                            path="/provider-dashboard"
+                            element={
+                                <ProtectedRoute allowedRoles={["provider"]}>
+                                    <ProviderBookings />
+                                </ProtectedRoute>
+                            }
+                        />
                         <Route
-                            path="/services/new"
+                            path="/admin-dashboard"
+                            element={
+                                <ProtectedRoute allowedRoles={["admin"]}>
+                                    <AdminBookings />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/services/create"
                             element={
                                 <ProtectedRoute allowedRoles={["provider"]}>
                                     <ServiceForm />
@@ -80,13 +80,13 @@ function App() {
 
                         <Route path="/login" element={<Login />} />
                         <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <ProfilePage/>
-            </ProtectedRoute>
-          }
-        />
+                            path="/profile"
+                            element={
+                                <ProtectedRoute>
+                                    <ProfilePage />
+                                </ProtectedRoute>
+                            }
+                        />
                         <Route path="/register" element={<Register />} />
                         {/* fallback */}
                         <Route path="*" element={<div className="p-8">Page not found</div>} />
