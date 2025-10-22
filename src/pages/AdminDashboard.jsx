@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBookings } from "../features/bookings/bookingsSlice";
 
-const AdminBookings = () => {
+const AdminDashboard = () => {
   const dispatch = useDispatch();
   const { bookings, loading, error } = useSelector((s) => s.bookings);
   const role = "admin";
@@ -154,4 +154,4 @@ const AdminBookings = () => {
   );
 };
 
-export default AdminBookings;
+export default AdminDashboard;

@@ -1,21 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { apiClient,getImageUrl } from "../api/apiClient";
+import { apiClient } from "../api/apiClient";
+import ServiceFilter from "../components/ServiceFilter";
+import ServiceGrid from "../components/ServiceGrid";
+import Pagination from "../components/Pagination";
 
 const Home = () => {
   const navigate = useNavigate();
   const [services, setServices] = useState([]);
+  const [filteredServices, setFilteredServices] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const fetchServices = async () => {
       try {
         const data = await apiClient("/services", { method: "GET" });
         setServices(data);
-      } catch (err) {
-        setError("Failed to load services. Please try again.");
+        const uniqueCategories = [...new Set(data.map((s) => s.category))];
+        setCategories(uniqueCategories);
+      } catch {
+        setError("Failed to load services.");
       } finally {
         setLoading(false);
       }
@@ -23,117 +37,62 @@ const Home = () => {
     fetchServices();
   }, []);
 
-  // Auto slide every 3s
+  // Filter logic
   useEffect(() => {
-    if (services.length > 0) {
-      const interval = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % services.length);
-      }, 3000);
-      return () => clearInterval(interval);
-    }
-  }, [services]);
+    let filtered = services;
+
+    if (selectedCategory)
+      filtered = filtered.filter((s) => s.category === selectedCategory);
+
+    if (searchTerm)
+      filtered = filtered.filter((s) =>
+        s.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+    setFilteredServices(filtered);
+    setCurrentPage(1); // Reset page when filters change
+  }, [services, selectedCategory, searchTerm]);
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredServices.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentServices = filteredServices.slice(startIndex, startIndex + itemsPerPage);
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Hero Section */}
       <section className="text-center py-16 bg-white shadow-sm">
         <h1 className="text-4xl font-bold mb-4">Find Local Services Easily</h1>
         <p className="text-gray-700 text-lg">
-          Book trusted service providers for all your home and business needs with just a few clicks.
+          Book trusted service providers for all your home and business needs.
         </p>
       </section>
 
-      {/* Carousel Section */}
-      <section className="container mx-auto px-4 py-12">
-        <h2 className="text-3xl font-bold text-gray-800 text-center mb-10">
-          Popular Services
-        </h2>
-
-        <div className="relative w-full max-w-4xl mx-auto overflow-hidden rounded-xl shadow-lg">
-          {/* Slides */}
-          <div
-            className="flex transition-transform duration-700"
-            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-          >
-            {services.map((service) => (
-              <div
-                key={service.id}
-               className="w-full h-80 flex-shrink-0 cursor-pointer"
-                onClick={() => navigate(`/services/${service.id}`)}
-              >
-<img
-    src={getImageUrl(service.imageUrl)}
-    alt={service.name}
-    className="w-full h-full object-cover rounded-xl"
-  />
-              </div>
-            ))}
-          </div>
-
-          {/* Controls */}
-          <button
-            onClick={() =>
-              setCurrentIndex((prev) =>
-                prev === 0 ? services.length - 1 : prev - 1
-              )
-            }
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-40 text-white p-2 rounded-full"
-          >
-            ◀
-          </button>
-          <button
-            onClick={() =>
-              setCurrentIndex((prev) => (prev + 1) % services.length)
-            }
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-40 text-white p-2 rounded-full"
-          >
-            ▶
-          </button>
-
-          {/* Dots */}
-          <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-2">
-            {services.map((_, index) => (
-              <span
-                key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={`w-3 h-3 rounded-full cursor-pointer ${
-                  index === currentIndex ? "bg-blue-600" : "bg-gray-300"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Services Grid Section (original) */}
       <section className="container mx-auto px-4 py-12">
         <h2 className="text-3xl font-bold text-gray-800 text-center mb-10">
           Available Services
         </h2>
+
         {loading && <p className="text-center">Loading...</p>}
         {error && <p className="text-center text-red-500">{error}</p>}
 
-        {!loading && !error && services.length > 0 && (
-          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {services.map((service) => (
-              <div
-                key={service.id}
-                onClick={() => navigate(`/services/${service.id}`)}
-                className="bg-white rounded-xl shadow-md hover:shadow-lg transition cursor-pointer"
-              >
-<img src={getImageUrl(service.imageUrl)} alt={service.name} 
- className="w-full h-48 object-cover rounded-t-xl"/>
+        {!loading && !error && (
+          <>
+            <ServiceFilter
+              categories={categories}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+            />
 
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold">{service.name}</h3>
-                  <p className="text-sm text-gray-600">
-                    {service.description?.slice(0, 60) || "No description"}
-                  </p>
-                  <p className="mt-3 text-blue-600 font-bold">₹{service.price}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+            <ServiceGrid services={currentServices} navigate={navigate} />
+
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </>
         )}
       </section>
     </div>

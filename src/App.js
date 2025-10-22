@@ -17,7 +17,7 @@ import Login from "./pages/Login";
 import ServiceForm from "./pages/ServiceForm";
 import ProfilePage from "./pages/ProfilePage";
 import ProviderBookings from "./pages/ProviderBookings";
-import AdminBookings from "./pages/AdminBookings";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
     return (
@@ -57,7 +57,7 @@ function App() {
                             path="/admin-dashboard"
                             element={
                                 <ProtectedRoute allowedRoles={["admin"]}>
-                                    <AdminBookings />
+                                    <AdminDashboard />
                                 </ProtectedRoute>
                             }
                         />

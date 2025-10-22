@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link,useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchServiceById, updateService, deleteService } from "../features/services/servicesSlice";
 import { getImageUrl } from "../api/apiClient";
@@ -7,6 +7,7 @@ import { getImageUrl } from "../api/apiClient";
 const ServiceDetails = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { service, loading, error } = useSelector((s) => s.services);
     const authUser = useSelector((s) => s.auth.user);
 
@@ -17,6 +18,13 @@ const ServiceDetails = () => {
         price: "",
         image: null,
     });
+
+     useEffect(() => {
+    if (!authUser) {
+      navigate("/login");
+      return;
+    }
+  }, [authUser, navigate]);
 
     useEffect(() => {
         if (!service || service.id !== Number(id)) {
@@ -124,7 +132,7 @@ const ServiceDetails = () => {
                                 Book Now
                             </Link>
 
-                            {(authUser.role === "admin" || authUser.role === "provider") && (
+                            {(authUser?.role === "admin" || authUser?.role === "provider") && (
                                 <div className="flex gap-2">
                                     <button
                                         onClick={() => setEditMode(true)}
@@ -133,7 +141,7 @@ const ServiceDetails = () => {
                                         Edit
                                     </button>
 
-                                    {authUser.role === "admin" && (
+                                    {authUser?.role === "admin" && (
                                         <button onClick={handleDelete} className="bg-red-600 text-white px-4 py-2 rounded">
                                             Delete
                                         </button>

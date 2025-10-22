@@ -52,7 +52,6 @@ const ServiceForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        
         // 📝 FormData for sending image + other fields
         const dataToSend = new FormData();
         dataToSend.append("name", formData.name);
@@ -132,6 +131,7 @@ const ServiceForm = () => {
                         <option value="plumbing">Plumbing</option>
                         <option value="electrical">Electrical</option>
                         <option value="installation">Installation</option>
+                        <option value="service">Service</option>
                     </select>
                 </div>
                 {/* 👇 Image upload */}
