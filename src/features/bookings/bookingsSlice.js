@@ -35,15 +35,14 @@ export const createBooking = createAsyncThunk(
 // ✍️ Update Booking Status (admin/provider only)
 export const updateBookingStatus = createAsyncThunk(
   "bookings/updateBookingStatus",
-  async ({ id, status,message }, { rejectWithValue }) => {
+  async ({ id, status, message }, { rejectWithValue }) => {
     try {
-      return await apiClient(`/bookings/${id}/status`, {
+      const res = await apiClient(`/bookings/${id}/status`, {
         method: "PATCH",
-          headers: {
-    "Content-Type": "application/json",
-  },
-        body: JSON.stringify({ status,message }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status, message }),
       });
+      return res; // 🔥 important: must return updated booking object
     } catch (err) {
       return rejectWithValue(err.message);
     }
@@ -58,8 +57,21 @@ const bookingsSlice = createSlice({
     bookings: [],
     loading: false,
     error: null,
+    recentlyUpdatedId: null, // 🔹 for flash highlight
   },
-  reducers: {},
+  reducers: {
+    optimisticStatusUpdate: (state, action) => {
+      const { id, status } = action.payload;
+      const index = state.bookings.findIndex((b) => b.id === id);
+      if (index !== -1) {
+        state.bookings[index].status = status;
+        state.recentlyUpdatedId = id; // 🔹 trigger highlight
+      }
+    },
+    clearRecentlyUpdatedId: (state) => {
+      state.recentlyUpdatedId = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Fetch bookings
@@ -90,17 +102,17 @@ const bookingsSlice = createSlice({
         state.error = action.payload;
       })
 
-      // Update booking status
+       // Update booking status — 
       .addCase(updateBookingStatus.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(updateBookingStatus.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.bookings.findIndex(
-          (b) => b.id === action.payload.id
-        );
-        if (index !== -1) state.bookings[index] = action.payload;
+        const updated = action.payload;
+        const index = state.bookings.findIndex((b) => b.id === updated.id);
+        if (index !== -1) state.bookings[index] = { ...state.bookings[index], ...updated };
+        state.recentlyUpdatedId = updated.id; // 🔹 highlight updated booking
       })
       .addCase(updateBookingStatus.rejected, (state, action) => {
         state.loading = false;
@@ -108,5 +120,7 @@ const bookingsSlice = createSlice({
       });
   },
 });
+
+export const { optimisticStatusUpdate, clearRecentlyUpdatedId } = bookingsSlice.actions;
 
 export default bookingsSlice.reducer;
