@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link,useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchServiceById, updateService, deleteService } from "../features/services/servicesSlice";
+import { fetchBookings } from "../features/bookings/bookingsSlice"; // ✅ make sure this thunk exists
 import { getImageUrl } from "../api/apiClient";
+import Review from "../components/Review";
 
 const ServiceDetails = () => {
     const { id } = useParams();
@@ -10,6 +12,7 @@ const ServiceDetails = () => {
     const navigate = useNavigate();
     const { service, loading, error } = useSelector((s) => s.services);
     const authUser = useSelector((s) => s.auth.user);
+    const { bookings } = useSelector((s) => s.bookings);
 
     const [editMode, setEditMode] = useState(false);
     const [formData, setFormData] = useState({
@@ -19,12 +22,26 @@ const ServiceDetails = () => {
         image: null,
     });
 
-     useEffect(() => {
-    if (!authUser) {
-      navigate("/login");
-      return;
-    }
-  }, [authUser, navigate]);
+    useEffect(() => {
+        if (authUser?.role === "customer") {
+            dispatch(fetchBookings({ role: "customer", userId: authUser.id }));
+        }
+    }, [dispatch, authUser]);
+
+    const completedBookings = bookings.filter(
+  (b) =>
+    b.serviceId === service.id &&
+    b.status === "completed" &&
+    b.customerId === authUser?.id
+);
+
+
+    useEffect(() => {
+        if (!authUser) {
+            navigate("/login");
+            return;
+        }
+    }, [authUser, navigate]);
 
     useEffect(() => {
         if (!service || service.id !== Number(id)) {
@@ -152,6 +169,8 @@ const ServiceDetails = () => {
                     </div>
                 </>
             )}
+             {/* Review section: placed after service info */}
+                            <Review serviceId={service.id} completedBookings={completedBookings} />
         </div>
     );
 };
