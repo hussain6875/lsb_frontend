@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchServiceById, updateService, deleteService } from "../features/services/servicesSlice";
 import { fetchBookings } from "../features/bookings/bookingsSlice"; // ✅ make sure this thunk exists
@@ -9,7 +9,6 @@ import Review from "../components/Review";
 const ServiceDetails = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const { service, loading, error } = useSelector((s) => s.services);
     const authUser = useSelector((s) => s.auth.user);
     const { bookings } = useSelector((s) => s.bookings);
@@ -35,13 +34,6 @@ const ServiceDetails = () => {
     b.customerId === authUser?.id
 );
 
-
-    useEffect(() => {
-        if (!authUser) {
-            navigate("/login");
-            return;
-        }
-    }, [authUser, navigate]);
 
     useEffect(() => {
         if (!service || service.id !== Number(id)) {

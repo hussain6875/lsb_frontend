@@ -10,6 +10,8 @@ const BookingForm = () => {
   const navigate = useNavigate();
   const { service } = useSelector((s) => s.services);
   const bookingsState = useSelector((s) => s.bookings);
+ const authUser = useSelector((s) => s.auth.user);
+
 
   const [bookingDate, setBookingDate] = useState("");
   const [street, setStreet] = useState("");
@@ -17,6 +19,13 @@ const BookingForm = () => {
   const [pincode, setPincode] = useState("");
   const [notes, setNotes] = useState("");
   const [error, setError] = useState(null);
+  
+      useEffect(() => {
+          if (!authUser) {
+              navigate("/login");
+              return;
+          }
+      }, [authUser, navigate]);
 
   useEffect(() => {
     if (!service || service.id !== Number(id)) {
