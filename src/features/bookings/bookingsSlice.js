@@ -49,6 +49,45 @@ export const updateBookingStatus = createAsyncThunk(
   }
 );
 
+// src/features/bookings/bookingsSlice.js
+export const selectTopProviders = (state) => {
+  const map = {};
+  state.bookings.bookings.forEach((b) => {
+    const name = b.provider?.name || "Unknown";
+    map[name] = map[name] || {
+      total: 0,
+      pending: 0,
+      confirmed: 0,
+      completed: 0,
+      cancelled: 0,
+      serviceCount: {},
+    };
+
+    map[name].total += 1;
+    map[name][b.status] += 1;
+
+    if (b.service?.name) {
+      map[name].serviceCount[b.service.name] =
+        (map[name].serviceCount[b.service.name] || 0) + 1;
+    }
+  });
+
+  return Object.entries(map)
+    .map(([provider, data]) => ({
+      provider,
+      total: data.total,
+      pending: data.pending,
+      confirmed: data.confirmed,
+      completed: data.completed,
+      cancelled: data.cancelled,
+      topService:
+        Object.entries(data.serviceCount).sort((a, b) => b[1] - a[1])[0]?.[0] ||
+        null,
+    }))
+    .sort((a, b) => b.completed - a.completed) // Most completed first
+    .slice(0, 10);
+};
+
 
 // ------------------- Slice -------------------
 const bookingsSlice = createSlice({
