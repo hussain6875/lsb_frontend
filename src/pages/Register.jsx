@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
@@ -18,28 +19,35 @@ const Register = () => {
   });
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
+  e.preventDefault();
+
+  // 1️⃣ Password mismatch check
+  if (formData.password !== formData.confirmPassword) {
+    toast.error("Passwords do not match!"); // ✅ alert -> toast
+    return;
+  }
+
+  // 2️⃣ Prepare payload
+  const { confirmPassword, ...payload } = formData;
+
+  // 3️⃣ Dispatch register action
+  dispatch(registerUser(payload)).then((res) => {
+    if (!res.error) {
+      toast.success("Registration successful!"); // ✅ Success toast
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        phone: "",
+        address: "",
+      });
+      navigate("/login");
+    } else {
+      toast.error(res.error?.message || "Registration failed! Try again."); // ✅ Error toast
     }
-
-    const { confirmPassword, ...payload } = formData;
-
-    dispatch(registerUser(payload)).then((res) => {
-      if (!res.error) {
-        setFormData({
-          name: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-          phone: "",
-          address: "",
-        });
-        navigate("/login");
-      }
-    });
-  };
+  });
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">

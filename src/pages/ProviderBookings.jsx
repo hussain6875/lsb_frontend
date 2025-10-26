@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBookings, updateBookingStatus } from "../features/bookings/bookingsSlice";
 
@@ -26,8 +27,10 @@ const ProviderBookings = () => {
         setUpdatingId(bookingId);
         try {
             await dispatch(updateBookingStatus({ id: bookingId, status: newStatus })).unwrap();
+            toast.success(`Booking status updated to "${newStatus}" successfully!`);
         } catch (err) {
-            alert("Failed to update status. Refreshing list...");
+            toast.error("Failed to update status. Refreshing list...");
+            console.error("Status update failed:", err);
             dispatch(fetchBookings({ role: authUser.role, userId: authUser.id }));
         }
         setUpdatingId(null);
@@ -35,7 +38,10 @@ const ProviderBookings = () => {
 
     const handleCancelBooking = async (bookingId) => {
         const message = prompt("Enter a reason for cancelling this booking:");
-        if (!message) return;
+        if (!message) {
+            toast.info("Cancellation cancelled by user."); // 🟡 info toast
+            return;
+        }
 
         // Optimistic UI
         dispatch({
@@ -46,8 +52,9 @@ const ProviderBookings = () => {
         setUpdatingId(bookingId);
         try {
             await dispatch(updateBookingStatus({ id: bookingId, status: "cancelled", message })).unwrap();
+            toast.success("Booking cancelled successfully!");
         } catch (err) {
-            alert("Failed to cancel booking. Refreshing list...");
+            toast.error("Failed to cancel booking. Refreshing list...");
             dispatch(fetchBookings({ role: authUser.role, userId: authUser.id }));
         }
         setUpdatingId(null);

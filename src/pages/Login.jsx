@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
@@ -11,16 +12,25 @@ const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(loginUser(formData))
-      .unwrap()
-      .then((res) => {
-        if (res.role === "admin") navigate("/admin-dashboard");
-        else if (res.role === "provider") navigate("/provider-dashboard");
-        else navigate("/");
-      })
-      .catch((err) => console.error("Login failed:", err));
-  };
+  e.preventDefault();
+  const dispatchAction = dispatch(loginUser(formData));
+
+  dispatchAction
+    .unwrap()
+    .then((res) => {
+      toast.success("Login successful!"); // ✅ success toast
+      setFormData({ email: "", password: "" });
+
+      // ✅ role-based navigation
+      if (res.role === "admin") navigate("/admin-dashboard");
+      else if (res.role === "provider") navigate("/provider-dashboard");
+      else navigate("/");
+    })
+    .catch((err) => {
+      toast.error(err?.message || "Login failed! Invalid credentials."); // ✅ error toast
+    });
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">

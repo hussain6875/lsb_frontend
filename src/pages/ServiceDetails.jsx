@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchServiceById, updateService, deleteService } from "../features/services/servicesSlice";
 import { fetchBookings } from "../features/bookings/bookingsSlice"; // ✅ make sure this thunk exists
@@ -8,6 +9,7 @@ import Review from "../components/Review";
 
 const ServiceDetails = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { service, loading, error } = useSelector((s) => s.services);
     const authUser = useSelector((s) => s.auth.user);
@@ -28,12 +30,8 @@ const ServiceDetails = () => {
     }, [dispatch, authUser]);
 
     const completedBookings = bookings.filter(
-  (b) =>
-    b.serviceId === service.id &&
-    b.status === "completed" &&
-    b.customerId === authUser?.id
-);
-
+        (b) => b.serviceId === service.id && b.status === "completed" && b.customerId === authUser?.id
+    );
 
     useEffect(() => {
         if (!service || service.id !== Number(id)) {
@@ -58,29 +56,38 @@ const ServiceDetails = () => {
     };
 
     const handleDelete = async () => {
-        if (window.confirm("Are you sure you want to delete this service?")) {
-            await dispatch(deleteService({ serviceId: service.id, role: authUser.role }));
-            // Optionally redirect to services list
-            window.location.href = "/services";
+        if (!window.confirm("Are you sure you want to delete this service?")) return;
+
+        try {
+            await dispatch(deleteService({ serviceId: service.id, role: authUser.role })).unwrap();
+            toast.success("Service deleted successfully!", { position: "top-right" });
+            navigate("/services");
+        } catch (error) {
+            toast.error("Failed to delete the service. Please try again.", { position: "top-right" });
         }
     };
 
     const handleUpdate = async () => {
-        const data = new FormData();
-        data.append("name", formData.name);
-        data.append("description", formData.description);
-        data.append("price", formData.price);
-        if (formData.image) data.append("image", formData.image);
+        try {
+            const data = new FormData();
+            data.append("name", formData.name);
+            data.append("description", formData.description);
+            data.append("price", formData.price);
+            if (formData.image) data.append("image", formData.image);
 
-        await dispatch(
-            updateService({
-                serviceId: service.id,
-                formData: data,
-                role: authUser.role,
-            })
-        );
+            await dispatch(
+                updateService({
+                    serviceId: service.id,
+                    formData: data,
+                    role: authUser.role,
+                })
+            );
+            toast.success("Service updated successfully!", { position: "top-right" });
 
-        setEditMode(false);
+            setEditMode(false);
+        } catch (error) {
+            toast.error("Failed to update service. Please try again.", { position: "top-right" });
+        }
     };
 
     if (loading) return <div className="p-4">Loading...</div>;
@@ -161,8 +168,8 @@ const ServiceDetails = () => {
                     </div>
                 </>
             )}
-             {/* Review section: placed after service info */}
-                            <Review serviceId={service.id} completedBookings={completedBookings} />
+            {/* Review section: placed after service info */}
+            <Review serviceId={service.id} completedBookings={completedBookings} />
         </div>
     );
 };

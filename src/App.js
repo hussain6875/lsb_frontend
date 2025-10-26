@@ -1,6 +1,7 @@
 // src/App.js
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 import ServiceList from "./pages/ServiceList";
 import ServiceDetails from "./pages/ServiceDetails";
@@ -22,6 +23,17 @@ import AdminDashboard from "./pages/AdminDashboard";
 function App() {
     return (
         <BrowserRouter>
+         <ToastContainer 
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
             <div className="min-h-screen flex flex-col">
                 <Navbar />
                 <main className="flex-1">

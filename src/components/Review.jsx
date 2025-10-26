@@ -6,7 +6,7 @@ import { fetchReviews, addReview, deleteReview, updateReview } from "../features
 const Review = ({ serviceId, completedBookings }) => {
     const dispatch = useDispatch();
     const authUser = useSelector((s) => s.auth.user);
-    const { reviews, loading } = useSelector((s) => s.reviews);
+    const { reviews } = useSelector((s) => s.reviews);
 
     const [comment, setComment] = useState("");
     const [rating, setRating] = useState(5);
