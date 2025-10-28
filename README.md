@@ -1,70 +1,130 @@
-# Getting Started with Create React App
+# 🎨 LocalService Frontend (React)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 🚀 Overview
+The **LocalService Frontend** is a modern, responsive web application built using **React** and **Tailwind CSS**.  
+It allows customers to book local services, providers to manage services, and admins to monitor platform activity.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🧩 Tech Stack
+- ⚛️ React 18  
+- 🧰 Redux Toolkit  
+- 🧭 React Router DOM  
+- 🎨 Tailwind CSS  
+- 🔔 React Toastify  
+- ⚡ Fetch API (no Axios)  
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 📁 Folder Structure
+frontend/
+├── api/
+│ ├── apiClient.js
+│ └── endpoints.js
+├── app/
+│ └── store.js
+├── components/
+│ ├── admin/
+│ │ ├── BookingChart.jsx
+│ │ ├── ChartFilters.jsx
+│ │ ├── ProviderStats.jsx
+│ │ └── SummaryCard.jsx
+│ ├── Footer.jsx
+│ ├── Navbar.jsx
+│ ├── Pagination.jsx
+│ ├── Profile.jsx
+│ ├── ProtectedRoute.jsx
+│ ├── Review.jsx
+│ ├── ServiceFilter.jsx
+│ └── ServiceGrid.jsx
+├── features/
+│ ├── auth/
+│ │ └── authSlice.js
+│ ├── bookings/
+│ │ └── bookingSlice.js
+│ ├── reviews/
+│ │ └── reviewsSlice.js
+│ └── services/
+│ └── serviceSlice.js
+├── pages/
+│ ├── AdminDashboard.jsx
+│ ├── BookingForm.jsx
+│ ├── Home.jsx
+│ ├── Login.jsx
+│ ├── MyBooking.jsx
+│ ├── ProfilePage.jsx
+│ ├── ProviderBooking.jsx
+│ ├── Register.jsx
+│ ├── ServiceDetails.jsx
+│ ├── ServiceForm.jsx
+│ └── ServiceList.jsx
+├── utils/
+│ ├── helpers.js
+│ └── statsHelpers.js
+├── App.js
+└── README.md
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+## ⚙️ Configuration
+This project **does not use a `.env` file** for API configuration.  
+The base API URL is defined directly inside `api/apiClient.js`:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+🧠 Key Features
 
-### `npm run build`
+✅ Role-based Access
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Customers can view and book services.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Providers can manage their own services.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Admin has full control over users, services, and bookings.
 
-### `npm run eject`
+✅ Dynamic Service Listings
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Filter, search, and paginate services using the ServiceGrid and ServiceFilter components.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+✅ Booking Flow
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Only Customers can create bookings.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Booking progress updates in real time via backend API.
 
-## Learn More
+✅ Admin Dashboard
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+View booking summaries, charts, and performance stats.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+✅ Responsive UI
 
-### Code Splitting
+Tailwind CSS ensures full responsiveness across devices.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+🧭 Upcoming Features
 
-### Analyzing the Bundle Size
+🔔 Booking time SMS notifications
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+💳 Payment gateway integration
 
-### Making a Progressive Web App
+🔐 OTP verification on registration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+💼 Provider subscription plans
 
-### Advanced Configuration
+🧑‍💻 Developer Notes
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Built and tested on Node.js v18+
 
-### Deployment
+Run locally with:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+npm install
+npm start
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Backend API must be running on the same host or update baseURL accordingly.
+
+👨‍💻 Author
+
+Muhammed Hussain M.
+📍 Malappuram, India
+💼 Full Stack (MERN) Developer
+🌐 LinkedIn Profile
+ ([optional link](https://www.linkedin.com/in/muhammad-hussain-m/))
+💻 GitHub Profile
+ ([optional link](https://github.com/hussain6875))

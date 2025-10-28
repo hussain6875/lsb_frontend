@@ -144,9 +144,11 @@ const ServiceDetails = () => {
                     <div className="flex items-center justify-between">
                         <div className="text-2xl font-semibold">₹{service.price}</div>
                         <div className="flex gap-2">
+                            {authUser?.role === "customer" && (
                             <Link to={`/services/${service.id}/book`} className="bg-green-600 text-white px-4 py-2 rounded">
                                 Book Now
                             </Link>
+                            )}
 
                             {(authUser?.role === "admin" || authUser?.role === "provider") && (
                                 <div className="flex gap-2">

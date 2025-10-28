@@ -82,7 +82,7 @@ const Review = ({ serviceId, completedBookings }) => {
                         <option value="">Select a completed booking</option>
                         {completedBookings.map((b) => (
                             <option key={b.id} value={b.id}>
-                                Booking {b.id} - {new Date(b.updatedAt || b.completedAt).toLocaleDateString()}
+                                Booking  - {new Date(b.updatedAt || b.completedAt).toLocaleDateString()}
                             </option>
                         ))}
                     </select>
