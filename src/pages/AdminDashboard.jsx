@@ -38,7 +38,7 @@ const AdminDashboard = () => {
       { status: "Completed", percentage: getPercent(summary.completed) },
       { status: "Cancelled", percentage: getPercent(summary.cancelled) },
     ];
-  }, [summary, chartFilter, bookings]);
+  }, [summary,bookings]);
 
   // 🔍 Filtered bookings
   const filteredBookings = useMemo(() => {
