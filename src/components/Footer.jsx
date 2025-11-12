@@ -23,11 +23,12 @@ const Footer = () => (
       {/* Social Media Section */}
       <div>
         <h3 className="font-semibold text-slate-800 mb-2 text-base">Follow Us</h3>
-        <div className="flex justify-center md:justify-start gap-4 text-2xl">
-          <a href="#" aria-label="LinkedIn" className="text-blue-700 hover:text-blue-900"><FaLinkedin /></a>
-          <a href="#" aria-label="Instagram" className="text-pink-600 hover:text-pink-800"><FaInstagram /></a>
-          <a href="#" aria-label="YouTube" className="text-red-600 hover:text-red-800"><FaYoutube /></a>
-        </div>
+       <div className="flex justify-center md:justify-start gap-4 text-2xl">
+  <a href="https://www.linkedin.com" aria-label="LinkedIn" className="text-blue-700 hover:text-blue-900"><FaLinkedin /></a>
+  <a href="https://www.instagram.com" aria-label="Instagram" className="text-pink-600 hover:text-pink-800"><FaInstagram /></a>
+  <a href="https://www.youtube.com" aria-label="YouTube" className="text-red-600 hover:text-red-800"><FaYoutube /></a>
+</div>
+
       </div>
     </div>
 
