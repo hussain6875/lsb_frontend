@@ -1,5 +1,7 @@
 export const baseURL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
+console.log('baseURL',baseURL)
+
 export const getImageUrl = (path) => `${baseURL}${path}`;
 
 export const apiClient = async (url, options = {}) => {
@@ -9,7 +11,7 @@ export const apiClient = async (url, options = {}) => {
 
   const headers = {
     ...(token && { Authorization: `Bearer ${token}` }),
-    ...(!isFormData && { "Content-Type": "application/json" }),  // ✅ JSON ആണെങ്കിൽ മാത്രം ചേർക്കുക
+    ...(!isFormData && { "Content-Type": "application/json" }),  
   };
 
   const response = await fetch(`${baseURL}${url}`, {
