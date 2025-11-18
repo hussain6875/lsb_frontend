@@ -59,7 +59,7 @@ const Footer = () => (
           </h3>
           <div className="flex gap-4">
             <a 
-              href="https://www.linkedin.com" 
+              href="https://www.linkedin.com/in/muhammad-hussain-m" 
               aria-label="LinkedIn" 
               className="w-12 h-12 bg-slate-700 hover:bg-blue-600 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/50"
             >
