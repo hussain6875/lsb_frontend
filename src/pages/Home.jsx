@@ -140,30 +140,6 @@ const Home = () => {
           </>
         )}
       </section>
-
-      {/* Stats Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-5xl font-bold mb-2">500+</div>
-              <div className="text-blue-100">Service Providers</div>
-            </div>
-            <div>
-              <div className="text-5xl font-bold mb-2">10K+</div>
-              <div className="text-blue-100">Happy Customers</div>
-            </div>
-            <div>
-              <div className="text-5xl font-bold mb-2">50+</div>
-              <div className="text-blue-100">Service Categories</div>
-            </div>
-            <div>
-              <div className="text-5xl font-bold mb-2">4.8★</div>
-              <div className="text-blue-100">Average Rating</div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
