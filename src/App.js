@@ -11,7 +11,6 @@ import MyBookings from "./pages/MyBookings";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
-import BookingForm from "./pages/BookingForm";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -41,14 +40,6 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/services" element={<ServiceList />} />
                         <Route path="/services/:id" element={<ServiceDetails />} />
-                        <Route
-                            path="/services/:id/book"
-                            element={
-                                <ProtectedRoute>
-                                    <BookingForm />
-                                </ProtectedRoute>
-                            }
-                        />
                         <Route
                             path="/my-bookings"
                             element={
