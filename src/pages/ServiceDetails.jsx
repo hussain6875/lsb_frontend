@@ -39,9 +39,9 @@ const ServiceDetails = () => {
         }
     }, [dispatch, authUser]);
 
-    const completedBookings = bookings.filter(
-        (b) => b.serviceId === service.id && b.status === "completed" && b.customerId === authUser?.id
-    );
+    const completedBookings = service
+        ? bookings.filter((b) => b.serviceId === service.id && b.status === "completed" && b.customerId === authUser?.id)
+        : [];
 
     useEffect(() => {
         if (!service || service.id !== Number(id)) {
