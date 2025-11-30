@@ -90,7 +90,7 @@ const ServiceDetails = () => {
             const data = new FormData();
             data.append("name", formData.name);
             data.append("description", formData.description);
-            data.append("price", formData.price);
+            data.append("price",Number(formData.price));
             if (formData.image) data.append("image", formData.image);
 
             await dispatch(
