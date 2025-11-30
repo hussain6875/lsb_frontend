@@ -44,9 +44,11 @@ const ServiceDetails = () => {
         : [];
 
     useEffect(() => {
-        if (!service || service.id !== Number(id)) {
-            dispatch(fetchServiceById(Number(id)));
-        } else {
+        dispatch(fetchServiceById(Number(id)));
+    }, [dispatch, id]);
+
+    useEffect(() => {
+        if (service) {
             setFormData({
                 name: service.name,
                 description: service.description,
@@ -54,7 +56,7 @@ const ServiceDetails = () => {
                 image: null,
             });
         }
-    }, [dispatch, id, service]);
+    }, [service]);
 
     const handleChange = (e) => {
         const { name, value, files } = e.target;
